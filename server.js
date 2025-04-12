@@ -12,21 +12,21 @@ const helmet = require('helmet');
 
 const app = express();
 
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      "script-src": ["'self'"],
-      "style-src": ["'self'"],
-    }
-  }
-}));
-
 app.use('/public', express.static(process.cwd() + '/public'));
 
 app.use(cors({origin: '*'})); //For FCC testing purposes only
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    "default-src": ["'self'"],
+    "script-src": ["'self'"],
+    "style-src": ["'self'"],
+  }
+}));
+
 
 //Index page (static HTML)
 app.route('/')
